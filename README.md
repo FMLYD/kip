@@ -23,7 +23,7 @@ To address these issues, we propose **Kernel Point Imputation (KPI)**, a **bi-le
 ## 🛠️ Installation
 
 ```bash
-git clone https://github.com/yourusername/KPI-imputation.git
+git clone xxxxxxxxxxxxxxxxxxxxxx
 cd KPI-imputation
 ```
 You can run exper_baseline.py
