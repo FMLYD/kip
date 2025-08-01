@@ -20,9 +20,6 @@ To address these issues, we propose **Kernel Point Imputation (KPI)**, a **bi-le
 - A **bi-level learning framework** that exploits oracle features for more accurate and robust imputations.
 - **Superior performance** across various real-world benchmarks with heterogeneous and partially observed datasets.
 
-## 🛠️ Installation
-
-```bash
-cd KPI-imputation
-```
+## Train
 You can run exper.py
+The hyperparameter
