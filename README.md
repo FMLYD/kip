@@ -20,15 +20,14 @@ To address these issues, we propose **Kernel Point Imputation (KPI)**, a **bi-le
 - A **bi-level learning framework** that exploits oracle features for more accurate and robust imputations.
 - **Superior performance** across various real-world benchmarks with heterogeneous and partially observed datasets.
 
-## Train
-
-To reproduce the KPI model on the blood_transfusion dataset with specific hyperparameters, use the following command:
-
-```python benchmark_kpi.py \
-  --dataset_name blood_transfusion \
-  --model KPI \
-  --lr 0.005 \
-  --batch_size 128 \
-  --k 20
+## Reproducing Results
+We utilize  publicly available datasets from the UCI Machine Learning Repository (https://archive.ics.uci.edu).
+To reproduce all the experiments in this work, simply run scripts like:
 ```
+bash cc.sh
+```
+This script will automatically handle dependency installation, data preprocessing, model training, and evaluation.
+
+
+
 
