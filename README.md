@@ -24,11 +24,11 @@ To address these issues, we propose **Kernel Point Imputation (KPI)**, a **bi-le
 
 To reproduce the KPI model on the blood_transfusion dataset with specific hyperparameters, use the following command:
 
-```python exper.py \
+```python benchmark_kpi.py \
   --dataset_name blood_transfusion \
   --model KPI \
   --lr 0.005 \
-  --batch_size 128
+  --batch_size 128 \
+  --k 20
 ```
 
-Additional hyperparameters (e.g., kernel configurations, number of iterations, missing rate settings, etc.) will be uploaded within 12 hours. 
