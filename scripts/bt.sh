@@ -12,5 +12,5 @@ python  benchmark_spi.py \
   --batch_size 128 \
   --p $p\
   --stop 20 \
-  --sigma "0.1,0.3,0.5,0.7,0.9,1,3,5,7" 
+  --sigma "0.1,0.3,0.7,1,3,5,7" 
 done
