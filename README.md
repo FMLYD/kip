@@ -26,4 +26,4 @@ To address these issues, we propose **Kernel Point Imputation (KPI)**, a **bi-le
 git clone xxxxxxxxxxxxxxxxxxxxxx
 cd KPI-imputation
 ```
-You can run exper_baseline.py
+You can run exper.py
