@@ -21,13 +21,17 @@ To address these issues, we propose **Kernel Point Imputation (KPI)**, a **bi-le
 - A **bi-level learning framework** that exploits oracle features for more accurate and robust imputations.
 - **Superior performance** across various real-world benchmarks with heterogeneous and partially observed datasets.
 
-## Reproducing Results
-We utilize  publicly available datasets from the UCI Machine Learning Repository (https://archive.ics.uci.edu).
-To reproduce all the experiments in this work, simply run scripts like:
-```
-bash cc.sh
-```
-This script will automatically handle dependency installation, data preprocessing, model training, and evaluation.
+
+## 🧪 Reproducing Results
+
+We utilize publicly available datasets from the [UCI Machine Learning Repository](https://archive.ics.uci.edu).
+
+To facilitate reproducibility, we provide all necessary scripts in the `scripts/` directory. These scripts handle the complete experimental pipeline, including:
+
+For example, to reproduce experiments on the Climate Classification dataset, simply run:
+```bash
+bash scripts/cc.sh
+
 
 
 
