@@ -30,7 +30,7 @@ To facilitate reproducibility, we provide all necessary scripts in the `scripts/
 
 For example, to reproduce experiments on the Climate Classification dataset, simply run:
 ```bash
-bash scripts/cc.sh
+bash scripts/bt.sh
 
 
 
