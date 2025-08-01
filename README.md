@@ -3,6 +3,7 @@
 This repository contains the official implementation of **KPI: A Generalized Iterative Imputation Framework for Model Adaptation and Oracle Feature Utilization**.
 
 ## 🔍 Overview
+![KPI Method Overview](./method.png)
 
 Iterative imputation is widely used to handle missing data by sequentially imputing each feature using the others as predictors. However, existing methods suffer from:
 
