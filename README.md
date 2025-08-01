@@ -21,5 +21,10 @@ To address these issues, we propose **Kernel Point Imputation (KPI)**, a **bi-le
 - **Superior performance** across various real-world benchmarks with heterogeneous and partially observed datasets.
 
 ## Train
-You can run exper.py
-The hyperparameter
+
+```python exper.py \
+  --dataset_name blood_transfusion \
+  --model KPI \
+  --lr 0.005 \
+  --batch_size 128
+```
