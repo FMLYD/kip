@@ -11,6 +11,6 @@ python  exper_standard_kip.py \
   --epochs 500 \
   --batch_size 128 \
   --p $p \
-  --sigma "0.1,0.3,0.5,0.7,0.9,1,3" 
+  --sigma "0.1,0.3,0.5,0.7,1,3,5" 
 done
 
