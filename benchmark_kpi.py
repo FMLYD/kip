@@ -46,7 +46,7 @@ parser.add_argument('--loss',default='mse')
 parser.add_argument('--p', default=0.1, type=float)
 parser.add_argument('--weights',default='mae')
 # parse_args operations
-from get_config import best_models
+
 def nan_manhattan(x, y, **kwargs):
     mask = ~np.isnan(x) & ~np.isnan(y)
     if not np.any(mask):
