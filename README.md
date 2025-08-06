@@ -22,16 +22,30 @@ To address these issues, we propose **Kernel Point Imputation (KPI)**, a **bi-le
 - **Superior performance** across various real-world benchmarks with heterogeneous and partially observed datasets.
 
 
+
 ## 🧪 Reproducing Results
 
-We utilize publicly available datasets from the [UCI Machine Learning Repository](https://archive.ics.uci.edu).
+### 1. Environment Setup
+Install Python 3.10 and required dependencies:
+```bash
+pip install -r requirements.txt
+```
 
-To facilitate reproducibility, we provide all necessary scripts in the `scripts/` directory. These scripts handle the complete experimental pipeline, including:
 
-For example, to reproduce experiments on the Climate Classification dataset, simply run:
+### 2. Data Preparation
+Obtain preprocessed datasets from the [UCI Machine Learning Repository](https://archive.ics.uci.edu), then place the downloaded data in the `./dataset` folder.
+
+Supported datasets summary:
+<img width="1143" height="431" alt="image" src="https://github.com/user-attachments/assets/f416f80c-6ebc-445c-87a4-63948ccb410b" />
+
+
+### 3. Train and Evaluate
+Experiment scripts for all benchmarks are provided under the `./scripts/` folder. Reproduce results with example commands like:
 ```bash
 bash scripts/bt.sh
 ```
+
+
 
 ## Acknowledgements
 
