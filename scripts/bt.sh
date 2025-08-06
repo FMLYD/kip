@@ -15,7 +15,7 @@ python  benchmark_kpi.py \
   --metric nan_manhattan \
   --weights uniform
 
-  python  benchmark_spi.py \
+  python  benchmark_kpi.py \
   --model KPI \
   --dataset_name  blood_transfusion  \
   --outpath './results' \
@@ -30,7 +30,7 @@ python  benchmark_kpi.py \
   --metric nan_manhattan \
   --weights uniform
 
-  python  benchmark_spi.py \
+  python  benchmark_kpi.py \
   --model KPI \
   --dataset_name  blood_transfusion  \
   --outpath './results' \
@@ -45,7 +45,7 @@ python  benchmark_kpi.py \
   --metric nan_manhattan \
   --weights uniform
 
-  python  benchmark_spi.py \
+  python  benchmark_kpi.py \
   --model KPI \
   --dataset_name  blood_transfusion  \
   --outpath './results' \
