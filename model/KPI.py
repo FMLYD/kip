@@ -35,7 +35,7 @@ class KPI(OTImputation):
         # print(valid_mask);exit()
         train_mask = np.isnan(train_X) # train_mask is the mask of the training data, excluding the observations in the validation and test sets.
         if self.initializer is not None:
-            imps = self.initializer.fit_transform(train_X)
+            imps = self.initializer.fit_transform(X)
             imps = torch.tensor(imps).double().to(DEVICE)
             imps = (self.noise * torch.randn(train_mask.shape, device=DEVICE).double() + imps)[train_mask] # replace the missing values in the training data with the initial imputations.
         train_X = torch.tensor(train_X).to(DEVICE)
