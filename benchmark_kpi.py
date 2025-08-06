@@ -18,6 +18,14 @@ from dataloaders import dataset_loader
 import torch
 import yaml
 
+def load_data(file_path):
+    try:
+        with open(file_path, encoding='utf-8') as file:
+            return yaml.load(file.read(), Loader=yaml.FullLoader)
+    except FileNotFoundError as e:
+        print(f"Error: {e}")
+        return {'WASS':9999999999999}
+
 torch.set_default_tensor_type('torch.FloatTensor')
 
 parser = argparse.ArgumentParser(prog='Basic')
@@ -47,9 +55,9 @@ def nan_manhattan(x, y, **kwargs):
 
 args = parser.parse_args()
 k, model=best_models[args.dataset_name][args.p]['k'],best_models[args.dataset_name][args.p]['model']
-weights={'knn-u':'uniform','knn':'distance','knn-m-u':'uniform','knn-m-d':'distance'}[model]
-metric={'knn-u':'nan_euclidean','knn':'nan_euclidean','knn-m-u':nan_manhattan,'knn-m-d':nan_manhattan}[model]
-print(k,weights,metric)
+weights = {'knn-u':'uniform','knn':'distance','knn-m-u':'uniform','knn-m-d':'distance'}[model]
+metric = {'knn-u':'nan_euclidean','knn':'nan_euclidean','knn-m-u':nan_manhattan,'knn-m-d':nan_manhattan}[model]
+print(k, weights, metric)
 
 print(args)
 # get the dataset
@@ -64,46 +72,26 @@ args.feature_num = ground_truth.shape[1]
 
 args = parser.parse_args()
 args.outpath = f"./{args.outpath}/{args.model}"
-args.sigma=args.sigma.split(',')
-args.sigma=[float(x) for x in args.sigma]
+args.sigma = args.sigma.split(',')
+args.sigma = [float(x) for x in args.sigma]
 
-
-models = {
-                
-            'KPI':multiKIPImputation(batch_size=args.batch_size, lr=args.lr, n_epochs=args.epochs, n_pairs=2, noise=1e-4, labda=1.0, normalize=1, initializer=KNNImputation(k=k, weights=weights,metric=metric), replace=False,sigma=args.sigma,loss=args.loss,stop=args.stop),
-           
-
-    }
-
-
-
-SCENARIO = [
-
-    "MCAR"
-]
-
+models = {'KPI': multiKIPImputation(batch_size=args.batch_size, lr=args.lr, n_epochs=args.epochs, n_pairs=2, noise=1e-4, labda=1.0, normalize=1, initializer = KNNImputation(k=k, weights=weights,metric=metric), replace=False,sigma=args.sigma,loss=args.loss,stop=args.stop),}
+SCENARIO = ["MCAR"]
 P_MISS = [0.1,0.2,0.3,0.4]
-feature_drop=[0.1,0.3,0.5,0.7,0.9]
+feature_drop = [0.1,0.3,0.5,0.7,0.9]
 enable_reproducible_results(args.seed)
 X = ground_truth
 diff_model_list = ["CSDI_T", "MissDiff(VP)", "MissDiff(VE)"]
 diff_logic = False
 
-imputation_scenarios = kip_simulate_scenarios(X,  diff_model=diff_logic, mechanisms=SCENARIO, percentages=P_MISS,feature_drop=feature_drop)
+imputation_scenarios = kip_simulate_scenarios(X,  diff_model=diff_logic, mechanisms=SCENARIO, percentages=P_MISS, feature_drop=feature_drop)
 
 print(f"[Info] We are running model: {args.model}")
 
 results = []
 result_df = pd.DataFrame()
 print(SCENARIO, P_MISS)
-def load_data(file_path):
-    import yaml
-    try:
-        with open(file_path, encoding='utf-8') as file:
-            return yaml.load(file.read(), Loader=yaml.FullLoader)
-    except FileNotFoundError as e:
-        print(f"Error: {e}")
-        return {'WASS':9999999999999}
+
 for scenario in SCENARIO:
     for p_miss in P_MISS:
         for model_name in args.model.split(','):
@@ -112,37 +100,27 @@ for scenario in SCENARIO:
            
             x, x_miss, mask = imputation_scenarios[scenario][p_miss]
             model = models[model_name]
-            
-            if model_name not in ['mean', 'median', 'mostfrequent', 'gain', 'em', 'mice', 'miracle', 'ice', 'mice',
-                                'miwae']:
-                if model_name in ['multikip']:
-                    model.p_miss=p_miss
-                    x_impute = model.fit_transform(x_miss.copy().values,x.copy().values)
-                else:
-                    model.p_miss=p_miss
-                    x_impute = model.fit_transform(x_miss.copy().values)
-            else:
-                model._fit(x_miss.copy())
-                x_impute = model._transform(x_miss.copy())
+            model.p_miss = p_miss
+            x_impute = model.fit_transform(x_miss.copy().values,x.copy().values)
+                
             if type(x_impute) is pd.DataFrame:
                 x_impute = x_impute.values
 
             rmse = RMSE(x_impute, x.values, mask.values)
             mae = MAE(x_impute, x.values, mask.values)
-            mse=MSE(x_impute, x.values, mask.values)
+            mse = MSE(x_impute, x.values, mask.values)
             dist = ot.dist(x_impute, x.values, metric='sqeuclidean', p=2)
             M = mask.sum(1) > 0
             nimp = M.sum().item()
             dists = ((x_impute[M][:, None] - x.values[M]) ** 2).sum(2) / 2.
             wass = ot.emd2(np.ones(nimp) / nimp, np.ones(nimp) / nimp, dists)
             
-            result={"RMSE": rmse.item(), "MAE": mae.item(), "WASS": wass,"MSE":mse.item()}
+            result={"RMSE": rmse.item(), "MAE": mae.item(), "WASS": wass, "MSE":mse.item()}
             if model_name in ['kip','multikip','multilaplaciankip','multilinearkip','multipolykip']:
-                data=load_data(f'./main_results/{args.dataset_name}/{model_name}_{scenario}_{p_miss}.yaml')
+                data = load_data(f'./main_results/{args.dataset_name}/{model_name}_{scenario}_{p_miss}.yaml')
                 try:
-                    old_mae=data['MAE']
-                    if mae.item()<old_mae:
-                        
+                    old_mae = data['MAE']
+                    if mae.item() < old_mae:
                         with open(f'./main_results/{args.dataset_name}/{model_name}_{scenario}_{p_miss}.yaml','w') as file:
                             yaml.dump(result,file)
                         with open(f'./main_config/{args.dataset_name}/{model_name}_{scenario}_{p_miss}.yaml','w') as file:
@@ -164,7 +142,6 @@ for scenario in SCENARIO:
             del model, x, x_miss, mask, x_impute
             gc.collect()
             torch.cuda.empty_cache()
-
             
 csv_name = (f"model_{args.model}_data_{args.dataset_name}_seed_{args.seed}.csv")
 
