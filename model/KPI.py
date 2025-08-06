@@ -1,4 +1,6 @@
-from ot_imp import *
+from model.ot_imp import *
+
+
 class KPI(OTImputation):
     def __init__(
         self,
@@ -13,28 +15,29 @@ class KPI(OTImputation):
         initializer = None,
         replace = False,
         sigma=[0.1,0.3,0.5,1,3,5],
-        DEVICE=torch.device('cuda'),p_miss=0.3,loss='mae',stop=5
+        DEVICE = torch.device('cuda'),p_miss=0.3,loss='mae',stop=5
     ):
         super().__init__(lr=lr, opt=opt, n_epochs=n_epochs, batch_size=batch_size, n_pairs=n_pairs, noise=noise, numItermax=None, stopThr=None, normalize=normalize)
         self.labda = labda
         self.initializer = initializer
         self.replace = replace
-        self.DEVICE=DEVICE
-        self.sigma=sigma
-        self.p_miss=p_miss
-        self.loss=loss
-        self.lr=lr
-        self.stop=stop
+        self.DEVICE = DEVICE
+        self.sigma = sigma
+        self.p_miss = p_miss
+        self.loss = loss
+        self.lr = lr
+        self.stop = stop
+
     def fit_transform(self, X: pd.DataFrame,GT=0, *args: Any, **kwargs: Any) -> pd.DataFrame:
         mask = np.isnan(X)
         GT=GT[:,:X.shape[1]]
         train_X, valid_mask=valid_ampute(X, self.p_miss)
         # print(valid_mask);exit()
-        train_mask=np.isnan(train_X)
+        train_mask = np.isnan(train_X) # train_mask is the mask of the training data, excluding the observations in the validation and test sets.
         if self.initializer is not None:
             imps = self.initializer.fit_transform(train_X)
             imps = torch.tensor(imps).double().to(DEVICE)
-            imps = (self.noise * torch.randn(train_mask.shape, device=DEVICE).double() + imps)[train_mask]
+            imps = (self.noise * torch.randn(train_mask.shape, device=DEVICE).double() + imps)[train_mask] # replace the missing values in the training data with the initial imputations.
         train_X = torch.tensor(train_X).to(DEVICE)
         train_X = train_X.clone()
         X = torch.tensor(X).to(DEVICE)
@@ -54,25 +57,23 @@ class KPI(OTImputation):
         train_mask = torch.tensor(train_mask).to(DEVICE)
         valid_mask = torch.tensor(valid_mask).to(DEVICE)
         imps.requires_grad = True
-        self.kernel_weight=nn.Parameter(torch.randn((len(self.sigma),1,1),requires_grad=True).to(DEVICE))
-        self.ss_weight=nn.Parameter(torch.randn((len(self.sigma),1,1),requires_grad=True).to(DEVICE))
-        self.bias1=nn.Parameter(torch.randn((len(self.sigma),1,1),requires_grad=True).to(DEVICE))
-        self.bias2=nn.Parameter(torch.randn((len(self.sigma),1,1),requires_grad=True).to(DEVICE))
+        self.kernel_weight = nn.Parameter(torch.randn((len(self.sigma), 1, 1), requires_grad=True).to(DEVICE))
+        self.ss_weight = nn.Parameter(torch.randn((len(self.sigma), 1, 1), requires_grad=True).to(DEVICE))
+        self.bias1 = nn.Parameter(torch.randn((len(self.sigma), 1, 1), requires_grad=True).to(DEVICE))
+        self.bias2 = nn.Parameter(torch.randn((len(self.sigma), 1, 1), requires_grad=True).to(DEVICE))
 
         optimizer = self.opt([imps,self.kernel_weight,self.ss_weight,self.bias1,self.bias2], lr=self.lr)
-        tick=0
-        min_val=999999999999
-        end=0
-        epoch=0
+        tick = 0
+        min_val = 999999999999
+        epoch = 0
         for i in range(self.n_epochs):
-            epoch+=1
+            epoch += 1
             X_filled = train_X.detach().clone()
             X_filled[train_mask.bool()] = imps
-            print(MAE(X_filled.detach().cpu().numpy(),GT,valid_mask.detach().cpu().numpy()))
             loss = 0
             loss_list = []
             loss_list2 = []
-            for pair in range(self.n_pairs):
+            for _ in range(self.n_pairs):
                 for d in range(X_filled.shape[1]):
 
                     idx1 = np.random.choice(n, self.batch_size, replace=self.replace)
@@ -80,7 +81,6 @@ class KPI(OTImputation):
 
                     x_columns = [i for i in range(X_filled.shape[1])]
                     x_columns.remove(d)
-                    # print(x_columns)
                     Xs = X_filled[idx1, :]
                     Xs = Xs[:, x_columns]
                     ys = X_filled[idx1, d].reshape(-1, 1)
@@ -90,20 +90,31 @@ class KPI(OTImputation):
                
                     mask_t = train_mask[idx2, d].bool()
                     mask_v=valid_mask[idx2,d].bool()
-#Next two lines together compute the kernel matrix \( K^{\Delta}_{X^t X^s} \), which corresponds to the same term in Equation (5) of the paper. The kernel matrix is computed using the `kernel_compute()` function.
-                    kernel_fused_ts=torch.stack([kernel_compute(Xt, Xs, kernel='gaussian', sigma=sigma) for sigma in self.sigma])# This line computes a stack of $E$ kernel matrices corresponding to different sigma hyperparameters.
-                    kernel_fused_ts=((kernel_fused_ts)*F.softmax(self.kernel_weight,dim=0)).sum(0) #This line  construct the ensembled168kernel \( K^{\Delta}_{X^t X^s} \) with  a learnable simplex vector.
 
-#Next two lines together compute the kernel matrix \( K^{\Delta}_{X^s X^s} \), which corresponds to the same term in Equation (5) of the paper. The kernel matrix is computed using the `kernel_compute()` function.
-                    kernel_fused_ss=torch.stack([kernel_compute(Xs, Xs, kernel='gaussian', sigma=sigma) for sigma in self.sigma])# This line computes a stack of $E$ kernel matrices corresponding to different sigma hyperparameters.
-                    kernel_fused_ss=((kernel_fused_ss)*F.softmax(self.ss_weight,dim=0)).sum(0)#This line  construct the ensembled168kernel \( K^{\Delta}_{X^s X^s} \) with  a learnable simplex vector.
+                    """
+                    The next two lines together compute the kernel matrix \( K^{\Delta}_{X^t X^s} \) in Equation (5)
+                    The kernel matrix is computed using the `kernel_compute()` function.
+                    """
+                    kernel_fused_ts = torch.stack([kernel_compute(Xt, Xs, kernel='gaussian', sigma=sigma) for sigma in self.sigma]) # Computing a stack of $E$ kernel matrices corresponding to different sigma hyperparameters.
+                    kernel_fused_ts = ((kernel_fused_ts) * F.softmax(self.kernel_weight, dim=0)).sum(0) # Computing the ensembled kernel \( K^{\Delta}_{X^t X^s} \) with normalized weights.
 
-# This line computes the prediction using kernel ridge regression: K_{X^t X^s} (K_{X^s X^s} + λI)^{-1} Y_s
-                    pred = kernel_fused_ts @ torch.inverse(kernel_fused_ss + self.labda*torch.eye(Xt.shape[0]).to(DEVICE)) @ ys
+                    """
+                    The next two lines together compute the kernel matrix \( K^{\Delta}_{X^s X^s} \) in Equation (5)
+                    The kernel matrix is computed using the `kernel_compute()` function.
+                    """
+                    kernel_fused_ss=torch.stack([kernel_compute(Xs, Xs, kernel='gaussian', sigma=sigma) for sigma in self.sigma]) # Computing a stack of $E$ kernel matrices corresponding to different sigma hyperparameters.
+                    kernel_fused_ss=((kernel_fused_ss)*F.softmax(self.ss_weight,dim=0)).sum(0) # # Computing the ensembled kernel \( K^{\Delta}_{X^s X^s} \) with normalized weights.
+
+                    
+                    """
+                    The next line computes the model prediction term as K^{\Delta}_{X^t X^s} (K^{\Delta}_{X^s X^s} + λI)^{-1} Y_s in Equation (6)
+                    """
+                    pred = kernel_fused_ts @ torch.inverse(kernel_fused_ss + self.labda * torch.eye(Xt.shape[0]).to(DEVICE)) @ ys
                     
                     
-#This line  computes squared error loss between true and predicted values
-
+                    """
+                    The next line computes the MSE loss in Equation (6)
+                    """
                     loss = (yt - pred) **2
                     
                     loss_list.append(loss[~mask_t])
@@ -112,23 +123,23 @@ class KPI(OTImputation):
             loss = torch.concat(loss_list, axis=0).mean()
             vali_loss = torch.concat(loss_list2, axis=0).mean().item()
             
-            # print("________________UPTDATE______________")
-            if torch.isnan(loss).any() or torch.isinf(loss).any():
+            if torch.isnan(loss).any() or torch.isinf(loss).any(): # If the loss is nan or inf, break the loop.
                 break
             
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
-            vali_loss=MAE(X_filled.detach().cpu().numpy(),GT,valid_mask.detach().cpu().numpy())
+            vali_loss = MAE(X_filled.detach().cpu().numpy(),GT,valid_mask.detach().cpu().numpy()) # Compute the validation loss.
             if GT is not None:
-                test_loss=MAE(X_filled.detach().cpu().numpy(),GT,mask.detach().cpu().numpy())
+                test_loss = MAE(X_filled.detach().cpu().numpy(),GT,mask.detach().cpu().numpy()) # Compute the test loss.
                 # vali_loss=loss.item()
-                if vali_loss <min_val:
+                if vali_loss < min_val:
                     tick=0
-                    min_val=vali_loss
-                    res=X_filled.detach().cpu().numpy()
+                    min_val = vali_loss
+                    res = X_filled.detach().cpu().numpy()
                 else:
                     tick+=1
+                    print(self.stop)
                 if tick==self.stop:
                     break
 
@@ -137,3 +148,4 @@ class KPI(OTImputation):
                 res=X_filled.detach().cpu().numpy()
 
         return res
+
