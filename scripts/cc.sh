@@ -1,6 +1,6 @@
 export CUDA_VISIBLE_DEVICES=2
 
-python  exper_standard_kip.py \
+python  benchmark_kpi.py \
   --model KPI \
   --dataset_name concrete_compression \
   --outpath './results' \
@@ -15,7 +15,7 @@ python  exper_standard_kip.py \
   --metric nan_manhattan \
   --weights distance
 
-  python  exper_standard_kip.py \
+  python  benchmark_kpi.py \
   --model KPI \
   --dataset_name concrete_compression \
   --outpath './results' \
@@ -30,7 +30,7 @@ python  exper_standard_kip.py \
   --metric nan_manhattan \
   --weights distance
 
-  python  exper_standard_kip.py \
+  python  benchmark_kpi.py \
   --model KPI \
   --dataset_name concrete_compression \
   --outpath './results' \
@@ -45,7 +45,7 @@ python  exper_standard_kip.py \
   --metric nan_manhattan \
   --weights distance
 
-  python  exper_standard_kip.py \
+  python  benchmark_kpi.py \
   --model KPI \
   --dataset_name concrete_compression \
   --outpath './results' \
