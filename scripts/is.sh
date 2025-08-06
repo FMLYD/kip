@@ -8,7 +8,7 @@ python benchmark_kpi.py \
   --seed 2024 \
   --epochs 500 \
   --batch_size 128 \
-  --p $p \
+  --p 0.1 \
   --stop 20 \
   --sigma "0.1,0.3,0.5,0.7,0.9,1,3,5,7" \
   --k 3\
@@ -24,7 +24,7 @@ python benchmark_kpi.py \
   --seed 2024 \
   --epochs 500 \
   --batch_size 128 \
-  --p $p \
+  --p 0.2 \
   --stop 20 \
   --sigma "0.1,0.3,0.5,0.7,0.9,1,3,5,7" \
   --k 5\
@@ -39,7 +39,7 @@ python benchmark_kpi.py \
   --seed 2024 \
   --epochs 500 \
   --batch_size 128 \
-  --p $p \
+  --p 0.3 \
   --stop 20 \
   --sigma "0.1,0.3,0.5,0.7,0.9,1,3,5,7" \
   --k 7\
@@ -54,7 +54,7 @@ python benchmark_kpi.py \
   --seed 2024 \
   --epochs 500 \
   --batch_size 128 \
-  --p $p \
+  --p 0.4 \
   --stop 20 \
   --sigma "0.1,0.3,0.5,0.7,0.9,1,3,5,7" \
   --k 5\
