@@ -8,7 +8,7 @@ import numpy as np
 import os
 import argparse
 from utils.utils import RMSE, MAE,MSE
-
+from model.KPI import *
 import ot
 from utils.utils import enable_reproducible_results, kip_simulate_scenarios
 
@@ -34,7 +34,7 @@ parser.add_argument('--epochs', default=50, type=int)
 parser.add_argument('--k', default=10, type=int)
 parser.add_argument('--stop', default=30, type=int)
 
-parser.add_argument('--loss',default='mae')
+parser.add_argument('--loss',default='mse')
 parser.add_argument('--p', default=0.1, type=float)
 parser.add_argument('--weights',default='mae')
 # parse_args operations
@@ -167,3 +167,4 @@ for scenario in SCENARIO:
 
             
 csv_name = (f"model_{args.model}_data_{args.dataset_name}_seed_{args.seed}.csv")
+
