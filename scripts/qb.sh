@@ -7,7 +7,7 @@ python  benchmark_kpi.py \
   --seed 2024 \
   --epochs 50 \
   --batch_size 128 \
-  --p $p \
+  --p 0.1 \
   --sigma "0.1,0.3,0.5,0.7,1,3,5" \
   --k 2\
   --metric nan_manhattan \
@@ -21,7 +21,7 @@ python  benchmark_kpi.py \
   --seed 2024 \
   --epochs 50 \
   --batch_size 128 \
-  --p $p \
+  --p 0.2 \
   --sigma "0.1,0.3,0.5,0.7,1,3,5" 、
   --k 3\
   --metric nan_manhattan \
@@ -36,7 +36,7 @@ python  benchmark_kpi.py \
   --seed 2024 \
   --epochs 50 \
   --batch_size 128 \
-  --p $p \
+  --p 0.3 \
   --sigma "0.1,0.3,0.5,0.7,1,3,5" \
   --k 3\
   --metric nan_manhattan \
@@ -50,7 +50,7 @@ python  benchmark_kpi.py \
   --seed 2024 \
   --epochs 50 \
   --batch_size 128 \
-  --p 5 \
+  --p 0.4 \
   --sigma "0.1,0.3,0.5,0.7,1,3,5" \
   --k 5\
   --metric nan_manhattan \
