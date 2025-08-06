@@ -11,9 +11,9 @@ python  benchmark_spi.py \
   --p 0.1\
   --stop 10 \
   --sigma "0.1,0.3,0.5,0.7,1,3,5" \
-  --k 4\
+  --k 30\
   --metric nan_manhattan \
-  --weights distance
+  --weights uniform
 
   python  benchmark_spi.py \
   --model KPI \
@@ -26,9 +26,9 @@ python  benchmark_spi.py \
   --p 0.2\
   --stop 10 \
   --sigma "0.1,0.3,0.5,0.7,1,3,5" \
-  --k 3\
+  --k 60\
   --metric nan_manhattan \
-  --weights distance
+  --weights uniform
 
   python  benchmark_spi.py \
   --model KPI \
@@ -41,9 +41,9 @@ python  benchmark_spi.py \
   --p 0.3\
   --stop 10 \
   --sigma "0.1,0.3,0.5,0.7,1,3,5" \
-  --k 30\
+  --k 70\
   --metric nan_manhattan \
-  --weights distance
+  --weights uniform
 
   python  benchmark_spi.py \
   --model KPI \
@@ -56,6 +56,6 @@ python  benchmark_spi.py \
   --p 0.4\
   --stop 10 \
   --sigma "0.1,0.3,0.5,0.7,1,3,5" \
-  --k 90\
+  --k 50\
   --metric nan_manhattan \
-  --weights distance
+  --weights uniform
