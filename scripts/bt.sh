@@ -10,7 +10,6 @@ python  benchmark_kpi.py \
   --batch_size 128 \
   --p 0.1\
   --stop 10 \
-  --sigma "0.01,0.1,1,5,9,100,1000" \
   --k 30\
   --metric nan_manhattan \
   --weights uniform
