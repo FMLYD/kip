@@ -1,7 +1,5 @@
 export CUDA_VISIBLE_DEVICES=2
 
-for p in  0.1 0.2 0.3 0.4
-do
 python  benchmark_spi.py \
   --model KPI \
   --dataset_name  blood_transfusion  \
@@ -10,7 +8,54 @@ python  benchmark_spi.py \
   --seed 2024 \
   --epochs 500 \
   --batch_size 128 \
-  --p $p\
+  --p 0.1\
   --stop 10 \
-  --sigma "0.1,0.3,0.5,0.7,1,3,5" 
-done
+  --sigma "0.1,0.3,0.5,0.7,1,3,5" \
+  --k 4\
+  --metric nan_manhattan \
+  --weights distance
+
+  python  benchmark_spi.py \
+  --model KPI \
+  --dataset_name  blood_transfusion  \
+  --outpath './results' \
+  --lr 0.01 \
+  --seed 2024 \
+  --epochs 500 \
+  --batch_size 128 \
+  --p 0.2\
+  --stop 10 \
+  --sigma "0.1,0.3,0.5,0.7,1,3,5" \
+  --k 3\
+  --metric nan_manhattan \
+  --weights distance
+
+  python  benchmark_spi.py \
+  --model KPI \
+  --dataset_name  blood_transfusion  \
+  --outpath './results' \
+  --lr 0.01 \
+  --seed 2024 \
+  --epochs 500 \
+  --batch_size 128 \
+  --p 0.3\
+  --stop 10 \
+  --sigma "0.1,0.3,0.5,0.7,1,3,5" \
+  --k 30\
+  --metric nan_manhattan \
+  --weights distance
+
+  python  benchmark_spi.py \
+  --model KPI \
+  --dataset_name  blood_transfusion  \
+  --outpath './results' \
+  --lr 0.01 \
+  --seed 2024 \
+  --epochs 500 \
+  --batch_size 128 \
+  --p 0.4\
+  --stop 10 \
+  --sigma "0.1,0.3,0.5,0.7,1,3,5" \
+  --k 90\
+  --metric nan_manhattan \
+  --weights distance
