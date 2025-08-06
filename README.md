@@ -44,7 +44,45 @@ Experiment scripts for all benchmarks are provided under the `./scripts/` folder
 ```bash
 bash scripts/bt.sh
 ```
+### 🔧 Optional: Docker Environment 
 
+For users who prefer containerized environments, we provide a lightweight `Dockerfile` that sets up a Conda-based environment named `kpi`. This environment includes Python 3.10 and several pre-installed base packages.
+
+> ⚠️ **Note**: The Docker image includes **only a partial installation** of the dependencies. You still need to activate the Conda environment and install the remaining packages via `requirements.txt`.
+
+#### 1. Build the Docker image
+
+```bash
+docker build -t kpi-conda .
+```
+
+#### 2. Run the container
+
+```bash
+docker run {your args} -it kpi-conda /bin/bash
+```
+For example, to mount the current directory and work inside it:
+```
+docker run  --rm -v $(pwd):/app -w /app -it kpi-conda /bin/bash
+```
+
+
+#### 3. Inside the container
+
+##### Activate the conda environment
+```
+conda activate kpi
+```
+##### Install the remaining dependencies
+```
+pip install -r requirements.txt
+```
+# Run your experiment
+```
+bash scripts/bt.sh
+```
+
+This setup is useful for users who want a consistent, containerized environment with Conda. 
 
 
 ## Acknowledgements
