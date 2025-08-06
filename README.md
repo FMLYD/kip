@@ -31,6 +31,11 @@ To facilitate reproducibility, we provide all necessary scripts in the `scripts/
 For example, to reproduce experiments on the Climate Classification dataset, simply run:
 ```bash
 bash scripts/bt.sh
+```
+
+## Acknowledgements
+
+We gratefully acknowledge the UCI Machine Learning Repository for providing the datasets used in this work. The availability of high-quality, well-documented, and openly accessible datasets is critical to the development, evaluation, and reproducibility of machine learning research. We appreciate the efforts of the UCI community in curating and maintaining this valuable resource, which continues to support and accelerate progress in the broader data science community.
 
 
 
