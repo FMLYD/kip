@@ -92,11 +92,11 @@ class KPI(OTImputation):
                     mask_v=valid_mask[idx2,d].bool()
 #Next two lines together compute the kernel matrix \( K^{\Delta}_{X^t X^s} \), which corresponds to the same term in Equation (5) of the paper. The kernel matrix is computed using the `kernel_compute()` function.
                     kernel_fused_ts=torch.stack([kernel_compute(Xt, Xs, kernel='gaussian', sigma=sigma) for sigma in self.sigma])# This line computes a stack of $E$ kernel matrices corresponding to different sigma hyperparameters.
-                    kernel_fused_ts=((kernel_fused_ts)*F.softmax(self.kernel_weight,dim=0)).sum(0) #This line  constructs the ensembled168kernel \( K^{\Delta}_{X^t X^s} \) with  a learnable simplex vector.
+                    kernel_fused_ts=((kernel_fused_ts)*F.softmax(self.kernel_weight,dim=0)).sum(0) #This line  construct the ensembled168kernel \( K^{\Delta}_{X^t X^s} \) with  a learnable simplex vector.
 
 #Next two lines together compute the kernel matrix \( K^{\Delta}_{X^s X^s} \), which corresponds to the same term in Equation (5) of the paper. The kernel matrix is computed using the `kernel_compute()` function.
                     kernel_fused_ss=torch.stack([kernel_compute(Xs, Xs, kernel='gaussian', sigma=sigma) for sigma in self.sigma])# This line computes a stack of $E$ kernel matrices corresponding to different sigma hyperparameters.
-                    kernel_fused_ss=((kernel_fused_ss)*F.softmax(self.ss_weight,dim=0)).sum(0)#This line  constructs the ensembled168kernel \( K^{\Delta}_{X^s X^s} \) with  a learnable simplex vector.
+                    kernel_fused_ss=((kernel_fused_ss)*F.softmax(self.ss_weight,dim=0)).sum(0)#This line  construct the ensembled168kernel \( K^{\Delta}_{X^s X^s} \) with  a learnable simplex vector.
 
 # This line computes the prediction using kernel ridge regression: K_{X^t X^s} (K_{X^s X^s} + λI)^{-1} Y_s
                     pred = kernel_fused_ts @ torch.inverse(kernel_fused_ss + self.labda*torch.eye(Xt.shape[0]).to(DEVICE)) @ ys
@@ -137,4 +137,3 @@ class KPI(OTImputation):
                 res=X_filled.detach().cpu().numpy()
 
         return res
-
