@@ -11,7 +11,7 @@ python exper_standard_kip.py \
   --p $p \
   --stop 20 \
   --sigma "0.1,0.3,0.5,0.7,0.9,1,3,5,7" \
-  --k 2\
+  --k 3\
   --metric nan_manhattan \
   --weights distance
   
@@ -27,7 +27,7 @@ python exper_standard_kip.py \
   --p $p \
   --stop 20 \
   --sigma "0.1,0.3,0.5,0.7,0.9,1,3,5,7" \
-  --k 2\
+  --k 5\
   --metric nan_manhattan \
   --weights distance
 
@@ -42,9 +42,9 @@ python exper_standard_kip.py \
   --p $p \
   --stop 20 \
   --sigma "0.1,0.3,0.5,0.7,0.9,1,3,5,7" \
-  --k 6\
+  --k 7\
   --metric nan_manhattan \
-  --weights uniform
+  --weights distance
 
   python exper_standard_kip.py \
   --model KPI \
@@ -57,6 +57,6 @@ python exper_standard_kip.py \
   --p $p \
   --stop 20 \
   --sigma "0.1,0.3,0.5,0.7,0.9,1,3,5,7" \
-  --k 12\
+  --k 5\
   --metric nan_manhattan \
-  --weights uniform
+  --weights distance
