@@ -12,7 +12,7 @@ python benchmark_kpi.py \
   --stop 10 \
   --k 3\
   --metric nan_manhattan \
-  --weights distance
+  --weights uniform
   
 
   python benchmark_kpi.py \
@@ -25,9 +25,9 @@ python benchmark_kpi.py \
   --batch_size 128 \
   --p 0.2 \
   --stop 10 \
-  --k 5\
+  --k 2\
   --metric nan_manhattan \
-  --weights distance
+  --weights uniform
 
   python benchmark_kpi.py \
   --model KPI \
@@ -39,9 +39,9 @@ python benchmark_kpi.py \
   --batch_size 128 \
   --p 0.3 \
   --stop 10 \
-  --k 7\
+  --k 4\
   --metric nan_manhattan \
-  --weights distance
+  --weights uniform
 
   python benchmark_kpi.py \
   --model KPI \
@@ -54,5 +54,4 @@ python benchmark_kpi.py \
   --p 0.4 \
   --stop 10 \
   --k 5\
-  --metric nan_manhattan \
   --weights distance
