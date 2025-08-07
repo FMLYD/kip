@@ -71,7 +71,7 @@ args.outpath = f"./{args.outpath}/{args.model}"
 args.sigma = args.sigma.split(',')
 args.sigma = [float(x) for x in args.sigma]
 
-models = {'KPI': KPI(batch_size=args.batch_size, lr=args.lr, n_epochs=args.epochs, n_pairs=2, noise=1e-4, labda=1.0, normalize=1, initializer = KNNImputation(k=args.k, weights=args.weights,metric=nan_manhattan if args.metric!='nan_euclidean' else nan_manhattan), replace=False,sigma=args.sigma,loss=args.loss,stop=args.stop),}
+models = {'KPI': KPI(batch_size=args.batch_size, lr=args.lr, n_epochs=args.epochs, n_pairs=2, noise=1e-4, labda=1.0, normalize=1, initializer = KNNImputation(k=args.k, weights=args.weights,metric=nan_manhattan if args.metric!='nan_euclidean' else 'nan_euclidean'), replace=False,sigma=args.sigma,loss=args.loss,stop=args.stop),}
 SCENARIO = ["MCAR"]
 P_MISS = [args.p]
 feature_drop = [0.1,0.3,0.5,0.7,0.9]
