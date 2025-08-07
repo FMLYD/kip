@@ -39,7 +39,6 @@ python  benchmark_kpi.py \
   --p 0.3\
   --stop 10 \
   --k 70\
-  --metric nan_manhattan \
   --weights uniform
 
   python  benchmark_kpi.py \
@@ -53,5 +52,4 @@ python  benchmark_kpi.py \
   --p 0.4\
   --stop 10 \
   --k 50\
-  --metric nan_manhattan \
   --weights uniform
