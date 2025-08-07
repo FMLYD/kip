@@ -79,7 +79,7 @@ pip install -r requirements.txt
 ```
 # Run your experiment
 ```
-bash scripts/bt.sh
+bash scripts/is.sh
 ```
 
 This setup is useful for users who want a consistent, containerized environment with Conda. 
